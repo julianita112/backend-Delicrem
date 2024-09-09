@@ -4,7 +4,6 @@ const sequelize = require('./config/database');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-
 const errorMiddleware = require('./middlewares/errorMiddleware');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const rolRoutes = require('./routes/rolRoutes');
@@ -29,8 +28,14 @@ require('./config/associations');
 
 dotenv.config();
 
+// Configuración de CORS para permitir todos los orígenes
+app.use(cors({
+    origin: '*', // Permitir todos los orígenes
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
+    credentials: true, // Permitir el envío de cookies y encabezados de autenticación
+}));
+
 app.use(express.json());
-app.use(cors());
 
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/roles', rolRoutes);
@@ -49,7 +54,6 @@ app.use('/api/rol_permisos', rolPermisoRoutes);
 app.use('/api/detallepedidos', detallePedidoRoutes);
 app.use('/api/categorias_insumo', categoriaInsumoRoutes);
 app.use('/api/ordenesproduccion', ordenProduccionRoutes);
-
 
 app.use(errorMiddleware);
 
